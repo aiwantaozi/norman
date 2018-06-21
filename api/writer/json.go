@@ -26,11 +26,13 @@ func (j *EncodingResponseWriter) start(apiContext *types.APIContext, code int, o
 func (j *EncodingResponseWriter) Write(apiContext *types.APIContext, code int, obj interface{}) {
 	j.start(apiContext, code, obj)
 	j.Body(apiContext, apiContext.Response, obj)
+
+	apiContext.ResponseBody = obj
+	apiContext.ResponseStatus = code
 }
 
 func (j *EncodingResponseWriter) Body(apiContext *types.APIContext, writer io.Writer, obj interface{}) error {
 	return j.VersionBody(apiContext, apiContext.Version, writer, obj)
-
 }
 
 func (j *EncodingResponseWriter) VersionBody(apiContext *types.APIContext, version *types.APIVersion, writer io.Writer, obj interface{}) error {

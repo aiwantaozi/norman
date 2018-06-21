@@ -33,6 +33,7 @@ type Server struct {
 	URLParser                   parse.URLParser
 	Defaults                    Defaults
 	AccessControl               types.AccessControl
+	AuditWriter                 AuditWriter
 }
 
 type Defaults struct {
@@ -89,7 +90,7 @@ func NewAPIServer() *Server {
 }
 
 func (s *Server) parser(rw http.ResponseWriter, req *http.Request) (*types.APIContext, error) {
-	ctx, err := parse.Parse(rw, req, s.Schemas, s.URLParser, s.Resolver)
+	ctx, err := parse.Parse(rw, req, s.Schemas, s.URLParser, s.Resolver, s.enableAudit())
 	ctx.ResponseWriter = s.ResponseWriters[ctx.ResponseFormat]
 	if ctx.ResponseWriter == nil {
 		ctx.ResponseWriter = s.ResponseWriters["json"]
@@ -167,9 +168,18 @@ func (s *Server) setupDefaults(schema *types.Schema) {
 	}
 }
 
+func (s *Server) enableAudit() bool {
+	return s.AuditWriter != nil
+}
+
 func (s *Server) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	if apiResponse, err := s.handle(rw, req); err != nil {
+	apiResponse, err := s.handle(rw, req)
+	if err != nil {
 		s.handleError(apiResponse, err)
+	}
+
+	if s.AuditWriter != nil {
+		go func() { s.AuditWriter.Write(apiResponse) }()
 	}
 }
 

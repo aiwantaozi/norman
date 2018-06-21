@@ -102,8 +102,11 @@ type APIContext struct {
 	AccessControl               AccessControl
 	SubContext                  map[string]string
 
-	Request  *http.Request
-	Response http.ResponseWriter
+	RequestBody    interface{}
+	ResponseBody   interface{}
+	ResponseStatus int
+	Request        *http.Request
+	Response       http.ResponseWriter
 }
 
 type apiContextKey struct{}
@@ -114,6 +117,7 @@ func NewAPIContext(req *http.Request, resp http.ResponseWriter, schemas *Schemas
 		Schemas:  schemas,
 	}
 	ctx := context.WithValue(req.Context(), apiContextKey{}, apiCtx)
+
 	apiCtx.Request = req.WithContext(ctx)
 	return apiCtx
 }

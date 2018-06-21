@@ -1,0 +1,4 @@
+package: github.com/rancher/norman
+import:
+- package: gopkg.in/natefinch/lumberjack.v2
+  version: master

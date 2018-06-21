@@ -69,7 +69,7 @@ func DefaultURLParser(schemas *types.Schemas, url *url.URL) (ParsedURL, error) {
 	return result, nil
 }
 
-func Parse(rw http.ResponseWriter, req *http.Request, schemas *types.Schemas, urlParser URLParser, resolverFunc ResolverFunc) (*types.APIContext, error) {
+func Parse(rw http.ResponseWriter, req *http.Request, schemas *types.Schemas, urlParser URLParser, resolverFunc ResolverFunc, enableAudit bool) (*types.APIContext, error) {
 	var err error
 
 	result := types.NewAPIContext(req, rw, schemas)
@@ -131,6 +131,14 @@ func Parse(rw http.ResponseWriter, req *http.Request, schemas *types.Schemas, ur
 	}
 
 	result.Type = result.Schema.ID
+
+	if enableAudit && (req.Method == http.MethodPost || req.Method == http.MethodPut) {
+		reqBody, err := copyBody(result.Request)
+		if err != nil {
+			return result, err
+		}
+		result.RequestBody = reqBody
+	}
 
 	if err := ValidateMethod(result); err != nil {
 		return result, err
@@ -299,6 +307,19 @@ func Body(req *http.Request) (map[string]interface{}, error) {
 	}
 
 	return ReadBody(req)
+}
+
+func copyBody(req *http.Request) (map[string]interface{}, error) {
+	req.ParseMultipartForm(maxFormSize)
+	if req.MultipartForm != nil {
+		return valuesToBody(req.MultipartForm.Value), nil
+	}
+
+	if req.PostForm != nil && len(req.PostForm) > 0 {
+		return valuesToBody(map[string][]string(req.Form)), nil
+	}
+
+	return ReadBodyWithoutLosingContent(req)
 }
 
 func valuesToBody(input map[string][]string) map[string]interface{} {
