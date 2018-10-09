@@ -385,7 +385,7 @@ func Generate(schemas *types.Schemas, backendTypes map[string]bool, cattleOutput
 			return err
 		}
 
-		if backendType ||
+		if backendType || schema.ControllerExcluded ||
 			(contains(schema.CollectionMethods, http.MethodGet) &&
 				!strings.HasPrefix(schema.PkgName, "k8s.io") &&
 				!strings.Contains(schema.PkgName, "/vendor/")) {
