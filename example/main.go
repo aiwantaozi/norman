@@ -15,11 +15,15 @@ import (
 )
 
 type Foo struct {
-	types.Resource
-	Name     string `json:"name"`
-	Foo      string `json:"foo"`
-	SubThing Baz    `json:"subThing"`
+	// types.Resource
+	Test     PointSecris `json:"test" norman:"type=array[array[float]]"`
+	Name     string      `json:"name"`
+	Foo      string      `json:"foo"`
+	SubThing Baz         `json:"subThing"`
 }
+
+type Point []float64
+type PointSecris []Point
 
 type Baz struct {
 	Name string `json:"name"`
@@ -29,7 +33,7 @@ var (
 	version = types.APIVersion{
 		Version: "v1",
 		Group:   "example.core.cattle.io",
-		Path:    "/example/v1",
+		Path:    "/v1",
 	}
 
 	Schemas = factory.Schemas(&version)
@@ -56,6 +60,9 @@ func main() {
 		}
 	})
 
+	// Schemas.MustImportAndCustomize(&version, Foo{}, func(schema *types.Schema) {
+	// 	schema.PluralName = "hoststats"
+	// })
 	server := api.NewAPIServer()
 	if err := server.AddSchemas(Schemas); err != nil {
 		panic(err)
