@@ -128,6 +128,7 @@ type Schema struct {
 	ErrorHandler        ErrorHandler        `json:"-"`
 	Validator           Validator           `json:"-"`
 	Store               Store               `json:"-"`
+	ControllerExcluded  bool                `json:"-"`
 }
 
 type Field struct {

@@ -80,6 +80,8 @@ k8s.io/apiextensions-apiserver v0.0.0-20180621165922-80db67131e8d h1:QYxqxjF8LG0
 k8s.io/apiextensions-apiserver v0.0.0-20180621165922-80db67131e8d/go.mod h1:IxkesAMoaCRoLrPJdZNZUQp9NfZnzqaVzLhb2VEQzXE=
 k8s.io/apimachinery v0.0.0-20180619225948-e386b2658ed2 h1:NJEj7o7SKxpURej3uJ1QZJZCeRlRj21EatnCK65nrB4=
 k8s.io/apimachinery v0.0.0-20180619225948-e386b2658ed2/go.mod h1:ccL7Eh7zubPUSh9A3USN90/OzHNSVN6zxzde07TDCL0=
+k8s.io/apimachinery v0.0.0-20181009084401-76721d167b70 h1:4aurmAVLVQICkGCyOmj9OXcV2RZq3KTjj1ssQ0rQ6iM=
+k8s.io/apimachinery v0.0.0-20181009084401-76721d167b70/go.mod h1:ccL7Eh7zubPUSh9A3USN90/OzHNSVN6zxzde07TDCL0=
 k8s.io/client-go v2.0.0-alpha.0.0.20180621152933-b0722d92a7c1+incompatible h1:lph8g2o3QoQdw5W+fKHD/+Td4MEN2dmXgAjoOH5aISo=
 k8s.io/client-go v2.0.0-alpha.0.0.20180621152933-b0722d92a7c1+incompatible/go.mod h1:7vJpHMYJwNQCWgzmNV+VYUl1zCObLyodBc8nIyt8L5s=
 k8s.io/gengo v0.0.0-20180223161844-01a732e01d00 h1:vt4Sh/+HFnLoTScgFLNoMjNqOg0sQgAzViarcz+UX3Q=
