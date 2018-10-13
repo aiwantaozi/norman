@@ -393,7 +393,7 @@ func Generate(schemas *types.Schemas, foreignTypes map[string]bool, cattleOutput
 		if backendType ||
 			(contains(schema.CollectionMethods, http.MethodGet) &&
 				!strings.HasPrefix(schema.PkgName, "k8s.io") &&
-				!strings.Contains(schema.PkgName, "/vendor/")) {
+				!strings.Contains(schema.PkgName, "/vendor/") && !schema.ControllerExcluded) {
 			controllers = append(controllers, schema)
 			if err := generateController(false, k8sDir, schema, schemas); err != nil {
 				return err
